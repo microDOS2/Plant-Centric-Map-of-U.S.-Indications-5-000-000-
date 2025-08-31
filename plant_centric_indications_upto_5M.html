@@ -1,0 +1,393 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Plant‑Centric Map of U.S. Indications (≤5,000,000) — Plant‑Linked Drugs/Agents</title>
+
+<style>
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 24px; }
+h1 { margin: 0 0 8px 0; font-size: 1.8rem; }
+.note { background: #fff8e1; border: 1px solid #ffe082; padding: 10px 12px; border-radius: 8px; margin: 12px 0 18px; }
+.controls { display:flex; gap:12px; align-items:center; margin: 10px 0 14px; flex-wrap:wrap; }
+input[type="search"] { padding:6px 10px; border:1px solid #cbd5e1; border-radius:6px; min-width:340px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
+th, td { border: 1px solid #e5e7eb; padding: 8px 10px; vertical-align: top; }
+th { background: #f3f4f6; text-align: left; position: sticky; top: 0; }
+tbody tr:nth-child(odd) { background: #fcfcfd; }
+.details { margin: 22px 0 6px; }
+.agent { background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; padding:12px; margin: 18px 0; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+.small { font-size: 0.9rem; color: #374151; }
+.tag { display:inline-block; padding:2px 8px; background:#eef2ff; color:#4338ca; border-radius:9999px; font-size:0.75rem; margin-left:8px; }
+.tag-new { background:#ecfdf5; color:#047857; }
+button { padding:6px 10px; border:1px solid #cbd5e1; background:#fff; border-radius:6px; cursor:pointer; }
+button[disabled] { opacity: 0.5; cursor: default; }
+summary { cursor:pointer; }
+.csv { margin-left: auto; }
+</style>
+
+</head>
+<body>
+  <h1>Plant‑Centric Map of U.S. Indications (≤5,000,000)</h1>
+  <div class="note">
+    <b>Scope:</b> United States; each indication shown is ≤5,000,000 people (or a clinical emergency indication), and the drug/agent has a current plant link:
+    direct plant natural product, semi‑synthetic from a plant precursor, or plant‑based biomanufacturing. Evidence accepted: FDA on‑label and
+    U.S. guideline‑standard off‑label (PDQ/NCCN etc.). Common plant names link to Wikipedia. Rows tagged <span class="tag tag-new">New under ≤5M</span> were surfaced by the expanded threshold.
+  </div>
+  <div class="controls">
+    <input id="q" type="search" placeholder="Filter (e.g., Taxus, podophyllotoxin, vinorelbine, POAG, pericarditis, breast, prostate)…">
+    <button class="csv" onclick="tableToCSV()">Export CSV</button>
+  </div>
+  <h2>Summary (ranked by # indications per drug/agent)</h2>
+  <table id="summary">
+    <thead><tr><th>Rank</th><th>Drug / Agent</th><th>Plant (binomial)</th><th>Common Plant Name</th><th>Relationship</th><th>Compound Class</th><th># Indications (≤5M)</th></tr></thead>
+    <tbody><tr><td>1</td><td>Vincristine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Direct plant natural product</td><td>Vinca alkaloid</td><td>9</td></tr><tr><td>2</td><td>Pilocarpine</td><td><em>Pilocarpus microphyllus</em></td><td><a href="https://en.wikipedia.org/wiki/Jaborandi" target="_blank" rel="noopener">Jaborandi</a></td><td>Direct plant natural product</td><td>Alkaloid (imidazole)</td><td>4</td></tr><tr><td>3</td><td>Etoposide</td><td><em>Podophyllum peltatum</em></td><td><a href="https://en.wikipedia.org/wiki/Podophyllum_peltatum" target="_blank" rel="noopener">Mayapple</a></td><td>Semi‑synthetic from plant precursor (podophyllotoxin)</td><td>Lignan derivative</td><td>4</td></tr><tr><td>4</td><td>Paclitaxel</td><td><em>Taxus baccata (precursor)</em></td><td><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Yew</a></td><td>Semi‑synthetic from plant precursor (10‑deacetylbaccatin III)</td><td>Taxane diterpenoid</td><td>4</td></tr><tr><td>5</td><td>Cannabidiol</td><td><em>Cannabis sativa L.</em></td><td><a href="https://en.wikipedia.org/wiki/Cannabis" target="_blank" rel="noopener">Cannabis</a></td><td>Direct plant natural product</td><td>Cannabinoid (terpenophenolic)</td><td>3</td></tr><tr><td>6</td><td>Colchicine</td><td><em>Colchicum autumnale</em></td><td><a href="https://en.wikipedia.org/wiki/Colchicum_autumnale" target="_blank" rel="noopener">Autumn crocus</a></td><td>Direct plant natural product</td><td>Tropolone alkaloid</td><td>3</td></tr><tr><td>7</td><td>Atropine</td><td><em>Atropa belladonna / Duboisia spp.</em></td><td><a href="https://en.wikipedia.org/wiki/Atropine" target="_blank" rel="noopener">Deadly nightshade / Corkwood</a></td><td>Direct plant natural product (industrial extraction)</td><td>Tropane alkaloid</td><td>3</td></tr><tr><td>8</td><td>Digoxin</td><td><em>Digitalis lanata</em></td><td><a href="https://en.wikipedia.org/wiki/Digitalis_lanata" target="_blank" rel="noopener">Woolly foxglove</a></td><td>Direct plant natural product (industrial extraction)</td><td>Cardiac glycoside</td><td>2</td></tr><tr><td>9</td><td>Docetaxel</td><td><em>Taxus baccata (precursor)</em></td><td><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Yew</a></td><td>Semi‑synthetic from plant precursor (10‑deacetylbaccatin III)</td><td>Taxane diterpenoid</td><td>2</td></tr><tr><td>10</td><td>Topotecan</td><td><em>Camptotheca acuminata</em></td><td><a href="https://en.wikipedia.org/wiki/Camptotheca_acuminata" target="_blank" rel="noopener">Happy tree</a></td><td>Semi‑synthetic from plant precursor (camptothecin)</td><td>Camptothecin derivative</td><td>2</td></tr><tr><td>11</td><td>Vinblastine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Direct plant natural product</td><td>Vinca alkaloid</td><td>2</td></tr><tr><td>12</td><td>Artemether</td><td><em>Artemisia annua</em></td><td><a href="https://en.wikipedia.org/wiki/Artemisia_annua" target="_blank" rel="noopener">Sweet wormwood</a></td><td>Semi‑synthetic from plant precursor (artemisinin)</td><td>Sesquiterpene lactone (artemisinin derivative)</td><td>1</td></tr><tr><td>13</td><td>Artesunate</td><td><em>Artemisia annua</em></td><td><a href="https://en.wikipedia.org/wiki/Artemisia_annua" target="_blank" rel="noopener">Sweet wormwood</a></td><td>Semi‑synthetic from plant precursor (artemisinin)</td><td>Sesquiterpene lactone (artemisinin derivative)</td><td>1</td></tr><tr><td>14</td><td>Cabazitaxel</td><td><em>Taxus baccata (precursor)</em></td><td><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Yew</a></td><td>Semi‑synthetic from plant precursor (10‑deacetylbaccatin III)</td><td>Taxane diterpenoid</td><td>1</td></tr><tr><td>15</td><td>Crofelemer</td><td><em>Croton lechleri</em></td><td><a href="https://en.wikipedia.org/wiki/Croton_lechleri" target="_blank" rel="noopener">Dragon&#x27;s blood tree</a></td><td>Direct plant preparation (botanical drug)</td><td>Proanthocyanidin oligomers (botanical drug)</td><td>1</td></tr><tr><td>16</td><td>Omacetaxine</td><td><em>Cephalotaxus harringtonia</em></td><td><a href="https://en.wikipedia.org/wiki/Cephalotaxus_harringtonia" target="_blank" rel="noopener">Japanese plum yew</a></td><td>Semi‑synthetic from plant alkaloid precursor</td><td>Cephalotaxus alkaloid derivative</td><td>1</td></tr><tr><td>17</td><td>Sinecatechins</td><td><em>Camellia sinensis</em></td><td><a href="https://en.wikipedia.org/wiki/Camellia_sinensis" target="_blank" rel="noopener">Green tea</a></td><td>Direct plant preparation (botanical drug)</td><td>Catechin mixture (botanical drug)</td><td>1</td></tr><tr><td>18</td><td>Taliglucerase alfa</td><td><em>Daucus carota (plant cells)</em></td><td><a href="https://en.wikipedia.org/wiki/Carrot" target="_blank" rel="noopener">Carrot (cell culture)</a></td><td>Plant‑based biomanufacturing (plant‑cell expression)</td><td>Protein (plant‑expressed)</td><td>1</td></tr><tr><td>19</td><td>Cocaine (topical/diagnostic)</td><td><em>Erythroxylum coca</em></td><td><a href="https://en.wikipedia.org/wiki/Erythroxylum_coca" target="_blank" rel="noopener">Coca</a></td><td>Direct plant natural product</td><td>Tropane alkaloid</td><td>1</td></tr><tr><td>20</td><td>Irinotecan</td><td><em>Camptotheca acuminata</em></td><td><a href="https://en.wikipedia.org/wiki/Camptotheca_acuminata" target="_blank" rel="noopener">Happy tree</a></td><td>Semi‑synthetic from plant precursor (camptothecin)</td><td>Camptothecin derivative</td><td>1</td></tr><tr><td>21</td><td>Quinine</td><td><em>Cinchona spp.</em></td><td><a href="https://en.wikipedia.org/wiki/Cinchona" target="_blank" rel="noopener">Cinchona</a></td><td>Direct plant natural product</td><td>Quinoline alkaloid</td><td>1</td></tr><tr><td>22</td><td>Vinorelbine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Semi‑synthetic from plant alkaloid precursors</td><td>Vinca alkaloid (semi‑synthetic)</td><td>1</td></tr></tbody>
+  </table>
+
+  <h2>Details by Drug/Agent</h2>
+  
+    <details class="agent">
+      <summary><b>Vincristine</b> — <em>Catharanthus roseus</em> (Madagascar periwinkle) • 9 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Vincristine <span class="tag">Vinca alkaloid</span></div>
+      <div><b>Plant Species:</b> <em>Catharanthus roseus</em> • <a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></div>
+      <div><b>Plant Part Used:</b> Leaves</div>
+      <div><b>Relationship:</b> Direct plant natural product</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Acute lymphoblastic leukemia (ALL)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Vinca alkaloid; inhibits microtubule assembly</td><td>Guideline (PDQ/NCCN)</td><td>Vincristine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/071484s042lbl.pdf" target="_blank" rel="noopener">FDA label: Vincristine</a><br><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Lymphoblastic lymphoma (LBL)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Vinca alkaloid; inhibits microtubule assembly</td><td>Guideline (PDQ/NCCN)</td><td>Vincristine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/071484s042lbl.pdf" target="_blank" rel="noopener">FDA label: Vincristine</a><br><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Hodgkin lymphoma (ABVD-alt variants)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Vinca alkaloid; inhibits microtubule assembly</td><td>Guideline (PDQ/NCCN)</td><td>Vincristine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/071484s042lbl.pdf" target="_blank" rel="noopener">FDA label: Vincristine</a><br><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Mantle cell lymphoma (R-CHOP-like)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Vinca alkaloid; inhibits microtubule assembly</td><td>Guideline (PDQ/NCCN)</td><td>Vincristine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/071484s042lbl.pdf" target="_blank" rel="noopener">FDA label: Vincristine</a><br><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Burkitt lymphoma</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Vinca alkaloid; inhibits microtubule assembly</td><td>Guideline (PDQ/NCCN)</td><td>Vincristine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/071484s042lbl.pdf" target="_blank" rel="noopener">FDA label: Vincristine</a><br><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Neuroblastoma (pediatric)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Vinca alkaloid; inhibits microtubule assembly</td><td>Guideline (PDQ/NCCN)</td><td>Vincristine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/071484s042lbl.pdf" target="_blank" rel="noopener">FDA label: Vincristine</a><br><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Wilms tumor (nephroblastoma)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Vinca alkaloid; inhibits microtubule assembly</td><td>Guideline (PDQ/NCCN)</td><td>Vincristine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/071484s042lbl.pdf" target="_blank" rel="noopener">FDA label: Vincristine</a><br><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Retinoblastoma (VEC)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Vinca alkaloid; inhibits microtubule assembly</td><td>Guideline (PDQ/NCCN)</td><td>Vincristine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/071484s042lbl.pdf" target="_blank" rel="noopener">FDA label: Vincristine</a><br><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Rhabdomyosarcoma (embryonal/alveolar)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Vinca alkaloid; inhibits microtubule assembly</td><td>Guideline (PDQ/NCCN)</td><td>Vincristine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/071484s042lbl.pdf" target="_blank" rel="noopener">FDA label: Vincristine</a><br><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Pilocarpine</b> — <em>Pilocarpus microphyllus</em> (Jaborandi) • 4 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Pilocarpine <span class="tag">Alkaloid (imidazole)</span></div>
+      <div><b>Plant Species:</b> <em>Pilocarpus microphyllus</em> • <a href="https://en.wikipedia.org/wiki/Jaborandi" target="_blank" rel="noopener">Jaborandi</a></div>
+      <div><b>Plant Part Used:</b> Leaves</div>
+      <div><b>Relationship:</b> Direct plant natural product</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Cystic fibrosis — sweat test</td><td>≈40,000 (U.S.)</td><td>Agent‑based diagnostic</td><td>Muscarinic agonist induces sweating for quantitative chloride test</td><td>Guideline (CFF)</td><td>Pilocarpine</td><td><em>Pilocarpus microphyllus</em></td><td><a href="https://en.wikipedia.org/wiki/Jaborandi" target="_blank" rel="noopener">Jaborandi</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2004/020593s004lbl.pdf" target="_blank" rel="noopener">FDA label: Pilocarpine (Salagen)</a><br><a href="https://en.wikipedia.org/wiki/Pilocarpine" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cff.org/medical-professionals/clinical-care-guidelines/diagnosis-cystic-fibrosis-guidelines" target="_blank" rel="noopener">CFF diagnosis guideline</a></td></tr><tr><td>Primary open‑angle glaucoma (POAG) <span class="tag tag-new">New under ≤5M</span></td><td>≈2–3 million (U.S.)</td><td>Miotic therapy</td><td>Muscarinic agonist contracts ciliary muscle; increases trabecular outflow</td><td>Guideline (AAO/ophthalmology texts)</td><td>Pilocarpine</td><td><em>Pilocarpus microphyllus</em></td><td><a href="https://en.wikipedia.org/wiki/Jaborandi" target="_blank" rel="noopener">Jaborandi</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2004/020593s004lbl.pdf" target="_blank" rel="noopener">FDA label: Pilocarpine (Salagen)</a><br><a href="https://en.wikipedia.org/wiki/Pilocarpine" target="_blank" rel="noopener">Plant origin</a><br><a href="https://en.wikipedia.org/wiki/Pilocarpine" target="_blank" rel="noopener">Background: Pilocarpine &amp; glaucoma</a></td></tr><tr><td>Radiation‑induced xerostomia (head &amp; neck cancer) <span class="tag tag-new">New under ≤5M</span></td><td>≪5,000,000</td><td>Sialogogue for xerostomia</td><td>Muscarinic agonist stimulates salivation</td><td>FDA label</td><td>Pilocarpine</td><td><em>Pilocarpus microphyllus</em></td><td><a href="https://en.wikipedia.org/wiki/Jaborandi" target="_blank" rel="noopener">Jaborandi</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2004/020593s004lbl.pdf" target="_blank" rel="noopener">FDA label: Pilocarpine (Salagen)</a><br><a href="https://en.wikipedia.org/wiki/Pilocarpine" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2004/020593s004lbl.pdf" target="_blank" rel="noopener">FDA label: Pilocarpine (Salagen)</a></td></tr><tr><td>Sjögren’s syndrome — xerostomia <span class="tag tag-new">New under ≤5M</span></td><td>≈1–4 million (U.S.)</td><td>Sialogogue for xerostomia</td><td>Muscarinic agonist stimulates salivation</td><td>FDA label</td><td>Pilocarpine</td><td><em>Pilocarpus microphyllus</em></td><td><a href="https://en.wikipedia.org/wiki/Jaborandi" target="_blank" rel="noopener">Jaborandi</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2004/020593s004lbl.pdf" target="_blank" rel="noopener">FDA label: Pilocarpine (Salagen)</a><br><a href="https://en.wikipedia.org/wiki/Pilocarpine" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2004/020593s004lbl.pdf" target="_blank" rel="noopener">FDA label: Pilocarpine (Salagen)</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Etoposide</b> — <em>Podophyllum peltatum</em> (Mayapple) • 4 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Etoposide <span class="tag">Lignan derivative</span></div>
+      <div><b>Plant Species:</b> <em>Podophyllum peltatum</em> • <a href="https://en.wikipedia.org/wiki/Podophyllum_peltatum" target="_blank" rel="noopener">Mayapple</a></div>
+      <div><b>Plant Part Used:</b> Rhizome</div>
+      <div><b>Relationship:</b> Semi‑synthetic from plant precursor (podophyllotoxin)</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Small cell lung cancer (SCLC)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Topoisomerase II inhibitor causes DNA breaks</td><td>Guideline (PDQ/NCCN)</td><td>Etoposide (from podophyllotoxin)</td><td><em>Podophyllum peltatum</em></td><td><a href="https://en.wikipedia.org/wiki/Podophyllum_peltatum" target="_blank" rel="noopener">Mayapple</a></td><td>Rhizome</td><td>Semi‑synthetic from plant precursor (podophyllotoxin)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2016/020406s073lbl.pdf" target="_blank" rel="noopener">FDA label: Etoposide</a><br><a href="https://en.wikipedia.org/wiki/Podophyllum_peltatum" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Ewing sarcoma family tumor</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Topoisomerase II inhibitor causes DNA breaks</td><td>Guideline (PDQ/NCCN)</td><td>Etoposide (from podophyllotoxin)</td><td><em>Podophyllum peltatum</em></td><td><a href="https://en.wikipedia.org/wiki/Podophyllum_peltatum" target="_blank" rel="noopener">Mayapple</a></td><td>Rhizome</td><td>Semi‑synthetic from plant precursor (podophyllotoxin)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2016/020406s073lbl.pdf" target="_blank" rel="noopener">FDA label: Etoposide</a><br><a href="https://en.wikipedia.org/wiki/Podophyllum_peltatum" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Testicular germ cell tumor (nonseminomatous)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Topoisomerase II inhibitor causes DNA breaks</td><td>Guideline (PDQ/NCCN)</td><td>Etoposide (from podophyllotoxin)</td><td><em>Podophyllum peltatum</em></td><td><a href="https://en.wikipedia.org/wiki/Podophyllum_peltatum" target="_blank" rel="noopener">Mayapple</a></td><td>Rhizome</td><td>Semi‑synthetic from plant precursor (podophyllotoxin)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2016/020406s073lbl.pdf" target="_blank" rel="noopener">FDA label: Etoposide</a><br><a href="https://en.wikipedia.org/wiki/Podophyllum_peltatum" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Gestational trophoblastic neoplasia (GTN)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Topoisomerase II inhibitor causes DNA breaks</td><td>Guideline (PDQ/NCCN)</td><td>Etoposide (from podophyllotoxin)</td><td><em>Podophyllum peltatum</em></td><td><a href="https://en.wikipedia.org/wiki/Podophyllum_peltatum" target="_blank" rel="noopener">Mayapple</a></td><td>Rhizome</td><td>Semi‑synthetic from plant precursor (podophyllotoxin)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2016/020406s073lbl.pdf" target="_blank" rel="noopener">FDA label: Etoposide</a><br><a href="https://en.wikipedia.org/wiki/Podophyllum_peltatum" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Paclitaxel</b> — <em>Taxus baccata (precursor)</em> (Yew) • 4 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Paclitaxel <span class="tag">Taxane diterpenoid</span></div>
+      <div><b>Plant Species:</b> <em>Taxus baccata (precursor)</em> • <a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Yew</a></div>
+      <div><b>Plant Part Used:</b> Needles/twigs</div>
+      <div><b>Relationship:</b> Semi‑synthetic from plant precursor (10‑deacetylbaccatin III)</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Kaposi sarcoma (AIDS‑related)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Taxane stabilizes microtubules</td><td>Guideline (PDQ/NCCN)</td><td>Paclitaxel</td><td><em>Taxus baccata (precursor)</em></td><td><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Yew</a></td><td>Needles/twigs</td><td>Semi‑synthetic from plant precursor (10‑deacetylbaccatin III)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2011/020262s049lbl.pdf" target="_blank" rel="noopener">FDA label: Paclitaxel</a><br><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Angiosarcoma</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Taxane stabilizes microtubules</td><td>Guideline (PDQ/NCCN)</td><td>Paclitaxel</td><td><em>Taxus baccata (precursor)</em></td><td><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Yew</a></td><td>Needles/twigs</td><td>Semi‑synthetic from plant precursor (10‑deacetylbaccatin III)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2011/020262s049lbl.pdf" target="_blank" rel="noopener">FDA label: Paclitaxel</a><br><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Nasopharyngeal carcinoma (recurrent/metastatic)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Taxane stabilizes microtubules</td><td>Guideline (PDQ/NCCN)</td><td>Paclitaxel</td><td><em>Taxus baccata (precursor)</em></td><td><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Yew</a></td><td>Needles/twigs</td><td>Semi‑synthetic from plant precursor (10‑deacetylbaccatin III)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2011/020262s049lbl.pdf" target="_blank" rel="noopener">FDA label: Paclitaxel</a><br><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Breast cancer (female) <span class="tag tag-new">New under ≤5M</span></td><td>≈3–4 million survivors (U.S.)</td><td>Chemotherapy component</td><td>Taxane stabilizes microtubules</td><td>Guideline (NCCN/PDQ)</td><td>Paclitaxel</td><td><em>Taxus baccata (precursor)</em></td><td><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Yew</a></td><td>Needles/twigs</td><td>Semi‑synthetic from plant precursor (10‑deacetylbaccatin III)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2011/020262s049lbl.pdf" target="_blank" rel="noopener">FDA label: Paclitaxel</a><br><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Cannabidiol</b> — <em>Cannabis sativa L.</em> (Cannabis) • 3 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Cannabidiol <span class="tag">Cannabinoid (terpenophenolic)</span></div>
+      <div><b>Plant Species:</b> <em>Cannabis sativa L.</em> • <a href="https://en.wikipedia.org/wiki/Cannabis" target="_blank" rel="noopener">Cannabis</a></div>
+      <div><b>Plant Part Used:</b> Aerial parts/resin</div>
+      <div><b>Relationship:</b> Direct plant natural product</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Lennox–Gastaut syndrome</td><td>≈48,000</td><td>Adjunct anti‑seizure therapy</td><td>Plant phytocannabinoid; antiseizure effect (not fully defined)</td><td>FDA label</td><td>Cannabidiol (CBD)</td><td><em>Cannabis sativa L.</em></td><td><a href="https://en.wikipedia.org/wiki/Cannabis" target="_blank" rel="noopener">Cannabis</a></td><td>Aerial parts/resin</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2018/210365lbl.pdf" target="_blank" rel="noopener">FDA label: EPIDIOLEX</a><br><a href="https://en.wikipedia.org/wiki/Cannabis" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2018/210365lbl.pdf" target="_blank" rel="noopener">FDA label: EPIDIOLEX</a></td></tr><tr><td>Dravet syndrome</td><td>≈20,000 (est.)</td><td>Adjunct anti‑seizure therapy</td><td>Plant phytocannabinoid; antiseizure effect (not fully defined)</td><td>FDA label</td><td>Cannabidiol (CBD)</td><td><em>Cannabis sativa L.</em></td><td><a href="https://en.wikipedia.org/wiki/Cannabis" target="_blank" rel="noopener">Cannabis</a></td><td>Aerial parts/resin</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2018/210365lbl.pdf" target="_blank" rel="noopener">FDA label: EPIDIOLEX</a><br><a href="https://en.wikipedia.org/wiki/Cannabis" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2018/210365lbl.pdf" target="_blank" rel="noopener">FDA label: EPIDIOLEX</a></td></tr><tr><td>Tuberous sclerosis complex — seizures</td><td>≈40,000–80,000</td><td>Adjunct anti‑seizure therapy</td><td>Plant phytocannabinoid; antiseizure effect (not fully defined)</td><td>FDA label</td><td>Cannabidiol (CBD)</td><td><em>Cannabis sativa L.</em></td><td><a href="https://en.wikipedia.org/wiki/Cannabis" target="_blank" rel="noopener">Cannabis</a></td><td>Aerial parts/resin</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2018/210365lbl.pdf" target="_blank" rel="noopener">FDA label: EPIDIOLEX</a><br><a href="https://en.wikipedia.org/wiki/Cannabis" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/210365s012lbl.pdf" target="_blank" rel="noopener">FDA label: EPIDIOLEX (TSC)</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Colchicine</b> — <em>Colchicum autumnale</em> (Autumn crocus) • 3 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Colchicine <span class="tag">Tropolone alkaloid</span></div>
+      <div><b>Plant Species:</b> <em>Colchicum autumnale</em> • <a href="https://en.wikipedia.org/wiki/Colchicum_autumnale" target="_blank" rel="noopener">Autumn crocus</a></div>
+      <div><b>Plant Part Used:</b> Corms</div>
+      <div><b>Relationship:</b> Direct plant natural product</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Familial Mediterranean fever (FMF)</td><td>≈10,000–30,000</td><td>Prophylaxis</td><td>Microtubule inhibitor; anti‑inflammatory</td><td>FDA label / Guideline</td><td>Colchicine</td><td><em>Colchicum autumnale</em></td><td><a href="https://en.wikipedia.org/wiki/Colchicum_autumnale" target="_blank" rel="noopener">Autumn crocus</a></td><td>Corms</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2009/022353lbl.pdf" target="_blank" rel="noopener">FDA label: Colchicine</a><br><a href="https://en.wikipedia.org/wiki/Colchicum_autumnale" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2009/022353lbl.pdf" target="_blank" rel="noopener">FDA label: Colchicine</a></td></tr><tr><td>Behçet disease — mucocutaneous</td><td>≈16,000–20,000</td><td>Symptom control</td><td>Microtubule inhibitor; anti‑inflammatory</td><td>Guideline (EULAR)</td><td>Colchicine</td><td><em>Colchicum autumnale</em></td><td><a href="https://en.wikipedia.org/wiki/Colchicum_autumnale" target="_blank" rel="noopener">Autumn crocus</a></td><td>Corms</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2009/022353lbl.pdf" target="_blank" rel="noopener">FDA label: Colchicine</a><br><a href="https://en.wikipedia.org/wiki/Colchicum_autumnale" target="_blank" rel="noopener">Plant origin</a><br><a href="https://ard.bmj.com/content/77/6/808" target="_blank" rel="noopener">EULAR Behçet recommendations</a></td></tr><tr><td>Recurrent pericarditis <span class="tag tag-new">New under ≤5M</span></td><td>≪5,000,000</td><td>Anti‑inflammatory adjunct</td><td>Microtubule inhibitor; reduces pericardial inflammation/recurrence</td><td>Guideline (ACC/AHA/ESC)</td><td>Colchicine</td><td><em>Colchicum autumnale</em></td><td><a href="https://en.wikipedia.org/wiki/Colchicum_autumnale" target="_blank" rel="noopener">Autumn crocus</a></td><td>Corms</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2009/022353lbl.pdf" target="_blank" rel="noopener">FDA label: Colchicine</a><br><a href="https://en.wikipedia.org/wiki/Colchicum_autumnale" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.acc.org/latest-in-cardiology" target="_blank" rel="noopener">ACC resources</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Atropine</b> — <em>Atropa belladonna / Duboisia spp.</em> (Deadly nightshade / Corkwood) • 3 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Atropine <span class="tag">Tropane alkaloid</span></div>
+      <div><b>Plant Species:</b> <em>Atropa belladonna / Duboisia spp.</em> • <a href="https://en.wikipedia.org/wiki/Atropine" target="_blank" rel="noopener">Deadly nightshade / Corkwood</a></div>
+      <div><b>Plant Part Used:</b> Leaves/roots (industrial extraction)</div>
+      <div><b>Relationship:</b> Direct plant natural product (industrial extraction)</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Anterior uveitis/iritis — cycloplegia &amp; synechiae prevention <span class="tag tag-new">New under ≤5M</span></td><td>≪5,000,000</td><td>Cycloplegic/mydriatic</td><td>Muscarinic antagonist; paralyzes ciliary muscle &amp; dilates pupil</td><td>Guideline (AAO/ophthalmology texts)</td><td>Atropine</td><td><em>Atropa belladonna / Duboisia spp.</em></td><td><a href="https://en.wikipedia.org/wiki/Atropine" target="_blank" rel="noopener">Deadly nightshade / Corkwood</a></td><td>Leaves/roots (industrial extraction)</td><td>Direct plant natural product (industrial extraction)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/208299s000lbl.pdf" target="_blank" rel="noopener">FDA label: Atropine (ophthalmic)</a><br><a href="https://en.wikipedia.org/wiki/Atropine" target="_blank" rel="noopener">Plant origin</a><br><a href="https://en.wikipedia.org/wiki/Atropine" target="_blank" rel="noopener">Background: Atropine</a></td></tr><tr><td>Organophosphate/carbamate poisoning — antidote <span class="tag tag-new">New under ≤5M</span></td><td>Clinical indication (emergency)</td><td>Antidote (antimuscarinic)</td><td>Muscarinic antagonist reverses cholinergic excess</td><td>Guideline (toxicology/ACMT)</td><td>Atropine</td><td><em>Atropa belladonna / Duboisia spp.</em></td><td><a href="https://en.wikipedia.org/wiki/Atropine" target="_blank" rel="noopener">Deadly nightshade / Corkwood</a></td><td>Leaves/roots (industrial extraction)</td><td>Direct plant natural product (industrial extraction)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/208299s000lbl.pdf" target="_blank" rel="noopener">FDA label: Atropine (ophthalmic)</a><br><a href="https://en.wikipedia.org/wiki/Atropine" target="_blank" rel="noopener">Plant origin</a><br><a href="https://en.wikipedia.org/wiki/Atropine" target="_blank" rel="noopener">Background: Atropine</a></td></tr><tr><td>Symptomatic bradycardia — ACLS <span class="tag tag-new">New under ≤5M</span></td><td>Clinical indication (emergency)</td><td>Anticholinergic (ACLS)</td><td>Muscarinic antagonist increases SA node firing/AV conduction</td><td>ACLS guideline</td><td>Atropine</td><td><em>Atropa belladonna / Duboisia spp.</em></td><td><a href="https://en.wikipedia.org/wiki/Atropine" target="_blank" rel="noopener">Deadly nightshade / Corkwood</a></td><td>Leaves/roots (industrial extraction)</td><td>Direct plant natural product (industrial extraction)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/208299s000lbl.pdf" target="_blank" rel="noopener">FDA label: Atropine (ophthalmic)</a><br><a href="https://en.wikipedia.org/wiki/Atropine" target="_blank" rel="noopener">Plant origin</a><br><a href="https://en.wikipedia.org/wiki/Atropine" target="_blank" rel="noopener">Background: Atropine</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Digoxin</b> — <em>Digitalis lanata</em> (Woolly foxglove) • 2 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Digoxin <span class="tag">Cardiac glycoside</span></div>
+      <div><b>Plant Species:</b> <em>Digitalis lanata</em> • <a href="https://en.wikipedia.org/wiki/Digitalis_lanata" target="_blank" rel="noopener">Woolly foxglove</a></div>
+      <div><b>Plant Part Used:</b> Leaves (lanatosides)</div>
+      <div><b>Relationship:</b> Direct plant natural product (industrial extraction)</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Atrial flutter — rate control (selected) <span class="tag tag-new">New under ≤5M</span></td><td>≪5,000,000</td><td>Rate control (selected scenarios)</td><td>Inhibits Na⁺/K⁺‑ATPase; increases vagal tone and inotropy</td><td>Guideline (ACC/AHA)</td><td>Digoxin</td><td><em>Digitalis lanata</em></td><td><a href="https://en.wikipedia.org/wiki/Digitalis_lanata" target="_blank" rel="noopener">Woolly foxglove</a></td><td>Leaves (lanatosides)</td><td>Direct plant natural product (industrial extraction)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2011/020405s019lbl.pdf" target="_blank" rel="noopener">FDA label: Digoxin</a><br><a href="https://en.wikipedia.org/wiki/Digoxin" target="_blank" rel="noopener">Plant origin</a><br><a href="https://en.wikipedia.org/wiki/Digoxin" target="_blank" rel="noopener">Background: Digoxin</a></td></tr><tr><td>Paroxysmal supraventricular tachycardia (PSVT) — selected <span class="tag tag-new">New under ≤5M</span></td><td>≪5,000,000</td><td>Rate control (selected scenarios)</td><td>Inhibits Na⁺/K⁺‑ATPase; increases vagal tone and slows AV conduction</td><td>Guideline (ACC/AHA)</td><td>Digoxin</td><td><em>Digitalis lanata</em></td><td><a href="https://en.wikipedia.org/wiki/Digitalis_lanata" target="_blank" rel="noopener">Woolly foxglove</a></td><td>Leaves (lanatosides)</td><td>Direct plant natural product (industrial extraction)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2011/020405s019lbl.pdf" target="_blank" rel="noopener">FDA label: Digoxin</a><br><a href="https://en.wikipedia.org/wiki/Digoxin" target="_blank" rel="noopener">Plant origin</a><br><a href="https://en.wikipedia.org/wiki/Digoxin" target="_blank" rel="noopener">Background: Digoxin</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Docetaxel</b> — <em>Taxus baccata (precursor)</em> (Yew) • 2 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Docetaxel <span class="tag">Taxane diterpenoid</span></div>
+      <div><b>Plant Species:</b> <em>Taxus baccata (precursor)</em> • <a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Yew</a></div>
+      <div><b>Plant Part Used:</b> Needles/twigs</div>
+      <div><b>Relationship:</b> Semi‑synthetic from plant precursor (10‑deacetylbaccatin III)</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Prostate cancer (mCRPC/mHSPC settings) <span class="tag tag-new">New under ≤5M</span></td><td>≈3+ million survivors (U.S.)</td><td>Chemotherapy component</td><td>Taxane stabilizes microtubules</td><td>Guideline (NCCN/PDQ)</td><td>Docetaxel</td><td><em>Taxus baccata (precursor)</em></td><td><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Yew</a></td><td>Needles/twigs</td><td>Semi‑synthetic from plant precursor (10‑deacetylbaccatin III)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2012/020449s072lbl.pdf" target="_blank" rel="noopener">FDA label: Docetaxel</a><br><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Non‑small cell lung cancer (NSCLC) — second line <span class="tag tag-new">New under ≤5M</span></td><td>≈0.5–1 million survivors (U.S.)</td><td>Chemotherapy component</td><td>Taxane stabilizes microtubules</td><td>Guideline (NCCN/PDQ)</td><td>Docetaxel</td><td><em>Taxus baccata (precursor)</em></td><td><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Yew</a></td><td>Needles/twigs</td><td>Semi‑synthetic from plant precursor (10‑deacetylbaccatin III)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2012/020449s072lbl.pdf" target="_blank" rel="noopener">FDA label: Docetaxel</a><br><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Topotecan</b> — <em>Camptotheca acuminata</em> (Happy tree) • 2 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Topotecan <span class="tag">Camptothecin derivative</span></div>
+      <div><b>Plant Species:</b> <em>Camptotheca acuminata</em> • <a href="https://en.wikipedia.org/wiki/Camptotheca_acuminata" target="_blank" rel="noopener">Happy tree</a></div>
+      <div><b>Plant Part Used:</b> Bark/wood</div>
+      <div><b>Relationship:</b> Semi‑synthetic from plant precursor (camptothecin)</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Recurrent ovarian carcinoma (topotecan)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Topoisomerase I inhibitor (camptothecin class)</td><td>Guideline (PDQ/NCCN)</td><td>Topotecan (from camptothecin)</td><td><em>Camptotheca acuminata</em></td><td><a href="https://en.wikipedia.org/wiki/Camptotheca_acuminata" target="_blank" rel="noopener">Happy tree</a></td><td>Bark/wood</td><td>Semi‑synthetic from plant precursor (camptothecin)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/200582s003lbl.pdf" target="_blank" rel="noopener">FDA label: Topotecan</a><br><a href="https://en.wikipedia.org/wiki/Camptotheca_acuminata" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Recurrent SCLC (second‑line topotecan)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Topoisomerase I inhibitor (camptothecin class)</td><td>Guideline (PDQ/NCCN)</td><td>Topotecan (from camptothecin)</td><td><em>Camptotheca acuminata</em></td><td><a href="https://en.wikipedia.org/wiki/Camptotheca_acuminata" target="_blank" rel="noopener">Happy tree</a></td><td>Bark/wood</td><td>Semi‑synthetic from plant precursor (camptothecin)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/200582s003lbl.pdf" target="_blank" rel="noopener">FDA label: Topotecan</a><br><a href="https://en.wikipedia.org/wiki/Camptotheca_acuminata" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Vinblastine</b> — <em>Catharanthus roseus</em> (Madagascar periwinkle) • 2 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Vinblastine <span class="tag">Vinca alkaloid</span></div>
+      <div><b>Plant Species:</b> <em>Catharanthus roseus</em> • <a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></div>
+      <div><b>Plant Part Used:</b> Leaves</div>
+      <div><b>Relationship:</b> Direct plant natural product</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Hodgkin lymphoma (ABVD)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Vinca alkaloid; inhibits microtubule assembly</td><td>Guideline (PDQ/NCCN)</td><td>Vinblastine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/012273s052lbl.pdf" target="_blank" rel="noopener">FDA label: Vinblastine</a><br><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr><tr><td>Langerhans cell histiocytosis (with steroids)</td><td>≪1,000,001</td><td>Chemotherapy component</td><td>Vinca alkaloid; inhibits microtubule assembly</td><td>Guideline (PDQ/NCCN)</td><td>Vinblastine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/012273s052lbl.pdf" target="_blank" rel="noopener">FDA label: Vinblastine</a><br><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Artemether</b> — <em>Artemisia annua</em> (Sweet wormwood) • 1 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Artemether <span class="tag">Sesquiterpene lactone (artemisinin derivative)</span></div>
+      <div><b>Plant Species:</b> <em>Artemisia annua</em> • <a href="https://en.wikipedia.org/wiki/Artemisia_annua" target="_blank" rel="noopener">Sweet wormwood</a></div>
+      <div><b>Plant Part Used:</b> Aerial parts</div>
+      <div><b>Relationship:</b> Semi‑synthetic from plant precursor (artemisinin)</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Uncomplicated malaria (U.S.)</td><td>≪1,000,001</td><td>Antimalarial therapy (combination)</td><td>Artemisinin derivative forms radicals toxic to Plasmodium</td><td>FDA label</td><td>Artemether (in artemether–lumefantrine)</td><td><em>Artemisia annua</em></td><td><a href="https://en.wikipedia.org/wiki/Artemisia_annua" target="_blank" rel="noopener">Sweet wormwood</a></td><td>Aerial parts</td><td>Semi‑synthetic from plant precursor (artemisinin)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2009/022268s000lbl.pdf" target="_blank" rel="noopener">FDA label: Coartem</a><br><a href="https://en.wikipedia.org/wiki/Artemisia_annua" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2009/022268s000lbl.pdf" target="_blank" rel="noopener">FDA label: Coartem</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Artesunate</b> — <em>Artemisia annua</em> (Sweet wormwood) • 1 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Artesunate <span class="tag">Sesquiterpene lactone (artemisinin derivative)</span></div>
+      <div><b>Plant Species:</b> <em>Artemisia annua</em> • <a href="https://en.wikipedia.org/wiki/Artemisia_annua" target="_blank" rel="noopener">Sweet wormwood</a></div>
+      <div><b>Plant Part Used:</b> Aerial parts</div>
+      <div><b>Relationship:</b> Semi‑synthetic from plant precursor (artemisinin)</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Severe malaria (U.S.)</td><td>≪1,000,001</td><td>Antimalarial therapy</td><td>Artemisinin derivative forms radicals toxic to Plasmodium</td><td>CDC / FDA (availability)</td><td>Artesunate</td><td><em>Artemisia annua</em></td><td><a href="https://en.wikipedia.org/wiki/Artemisia_annua" target="_blank" rel="noopener">Sweet wormwood</a></td><td>Aerial parts</td><td>Semi‑synthetic from plant precursor (artemisinin)</td><td class='small'><a href="https://www.cdc.gov/malaria/diagnosis_treatment/artesunate.html" target="_blank" rel="noopener">CDC: Artesunate (severe malaria)</a><br><a href="https://en.wikipedia.org/wiki/Artemisia_annua" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cdc.gov/malaria/diagnosis_treatment/artesunate.html" target="_blank" rel="noopener">CDC: Artesunate for severe malaria</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Cabazitaxel</b> — <em>Taxus baccata (precursor)</em> (Yew) • 1 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Cabazitaxel <span class="tag">Taxane diterpenoid</span></div>
+      <div><b>Plant Species:</b> <em>Taxus baccata (precursor)</em> • <a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Yew</a></div>
+      <div><b>Plant Part Used:</b> Needles/twigs</div>
+      <div><b>Relationship:</b> Semi‑synthetic from plant precursor (10‑deacetylbaccatin III)</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Prostate cancer (post‑docetaxel mCRPC) <span class="tag tag-new">New under ≤5M</span></td><td>≈3+ million survivors (U.S.)</td><td>Chemotherapy component</td><td>Taxane stabilizes microtubules</td><td>FDA label / Guideline</td><td>Cabazitaxel</td><td><em>Taxus baccata (precursor)</em></td><td><a href="https://en.wikipedia.org/wiki/Taxus_baccata" target="_blank" rel="noopener">Yew</a></td><td>Needles/twigs</td><td>Semi‑synthetic from plant precursor (10‑deacetylbaccatin III)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2022/201023s022lbl.pdf" target="_blank" rel="noopener">FDA label: Cabazitaxel</a><br><a href="https://en.wikipedia.org/wiki/Cabazitaxel" target="_blank" rel="noopener">Plant linkage</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Crofelemer</b> — <em>Croton lechleri</em> (Dragon&#x27;s blood tree) • 1 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Crofelemer <span class="tag">Proanthocyanidin oligomers (botanical drug)</span></div>
+      <div><b>Plant Species:</b> <em>Croton lechleri</em> • <a href="https://en.wikipedia.org/wiki/Croton_lechleri" target="_blank" rel="noopener">Dragon&#x27;s blood tree</a></div>
+      <div><b>Plant Part Used:</b> Latex/sap</div>
+      <div><b>Relationship:</b> Direct plant preparation (botanical drug)</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Non‑infectious diarrhea in adults with HIV/AIDS on ART <span class="tag tag-new">New under ≤5M</span></td><td>≪5,000,000</td><td>Antisecretory (botanical)</td><td>Chloride channel modulator reduces intestinal fluid secretion</td><td>FDA label</td><td>Crofelemer</td><td><em>Croton lechleri</em></td><td><a href="https://en.wikipedia.org/wiki/Croton_lechleri" target="_blank" rel="noopener">Dragon&#x27;s blood tree</a></td><td>Latex/sap</td><td>Direct plant preparation (botanical drug)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2012/202292Orig1s000lbl.pdf" target="_blank" rel="noopener">FDA label: Crofelemer</a><br><a href="https://en.wikipedia.org/wiki/Croton_lechleri" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2012/202292Orig1s000lbl.pdf" target="_blank" rel="noopener">FDA label: Crofelemer</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Omacetaxine</b> — <em>Cephalotaxus harringtonia</em> (Japanese plum yew) • 1 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Omacetaxine <span class="tag">Cephalotaxus alkaloid derivative</span></div>
+      <div><b>Plant Species:</b> <em>Cephalotaxus harringtonia</em> • <a href="https://en.wikipedia.org/wiki/Cephalotaxus_harringtonia" target="_blank" rel="noopener">Japanese plum yew</a></div>
+      <div><b>Plant Part Used:</b> Leaves/needles</div>
+      <div><b>Relationship:</b> Semi‑synthetic from plant alkaloid precursor</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Chronic myeloid leukemia (TKI‑resistant)</td><td>≈70,000–100,000</td><td>TKI‑resistant therapy</td><td>Protein synthesis inhibitor (homoharringtonine derivative)</td><td>FDA label</td><td>Omacetaxine (homoharringtonine)</td><td><em>Cephalotaxus harringtonia</em></td><td><a href="https://en.wikipedia.org/wiki/Cephalotaxus_harringtonia" target="_blank" rel="noopener">Japanese plum yew</a></td><td>Leaves/needles</td><td>Semi‑synthetic from plant alkaloid precursor</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2012/203585s000lbl.pdf" target="_blank" rel="noopener">FDA label: Omacetaxine</a><br><a href="https://en.wikipedia.org/wiki/Cephalotaxus_harringtonia" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2012/203585s000lbl.pdf" target="_blank" rel="noopener">FDA label: Omacetaxine</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Sinecatechins</b> — <em>Camellia sinensis</em> (Green tea) • 1 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Sinecatechins <span class="tag">Catechin mixture (botanical drug)</span></div>
+      <div><b>Plant Species:</b> <em>Camellia sinensis</em> • <a href="https://en.wikipedia.org/wiki/Camellia_sinensis" target="_blank" rel="noopener">Green tea</a></div>
+      <div><b>Plant Part Used:</b> Leaves (extract)</div>
+      <div><b>Relationship:</b> Direct plant preparation (botanical drug)</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>External genital/perianal warts (condyloma acuminata) <span class="tag tag-new">New under ≤5M</span></td><td>≪5,000,000</td><td>Topical botanical drug</td><td>Polyphenolic catechins with antiviral/immune effects (topical)</td><td>FDA label</td><td>Sinecatechins 15% ointment</td><td><em>Camellia sinensis</em></td><td><a href="https://en.wikipedia.org/wiki/Camellia_sinensis" target="_blank" rel="noopener">Green tea</a></td><td>Leaves (extract)</td><td>Direct plant preparation (botanical drug)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2010/022202s000lbl.pdf" target="_blank" rel="noopener">FDA label: Sinecatechins</a><br><a href="https://en.wikipedia.org/wiki/Camellia_sinensis" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2010/022202s000lbl.pdf" target="_blank" rel="noopener">FDA label: Sinecatechins</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Taliglucerase alfa</b> — <em>Daucus carota (plant cells)</em> (Carrot (cell culture)) • 1 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Taliglucerase alfa <span class="tag">Protein (plant‑expressed)</span></div>
+      <div><b>Plant Species:</b> <em>Daucus carota (plant cells)</em> • <a href="https://en.wikipedia.org/wiki/Carrot" target="_blank" rel="noopener">Carrot (cell culture)</a></div>
+      <div><b>Plant Part Used:</b> Cultured plant cells</div>
+      <div><b>Relationship:</b> Plant‑based biomanufacturing (plant‑cell expression)</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Gaucher disease type 1</td><td>≈6,000–10,000</td><td>Enzyme replacement therapy</td><td>Recombinant β‑glucocerebrosidase produced in carrot cells</td><td>FDA label</td><td>Taliglucerase alfa (recombinant β‑glucocerebrosidase)</td><td><em>Daucus carota (plant cells)</em></td><td><a href="https://en.wikipedia.org/wiki/Carrot" target="_blank" rel="noopener">Carrot (cell culture)</a></td><td>Cultured plant cells</td><td>Plant‑based biomanufacturing (plant‑cell expression)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2012/022458s000lbl.pdf" target="_blank" rel="noopener">FDA label: Elelyso</a><br><a href="https://en.wikipedia.org/wiki/Carrot" target="_blank" rel="noopener">Plant reference</a><br><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2012/022458s000lbl.pdf" target="_blank" rel="noopener">FDA label: Elelyso</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Cocaine (topical/diagnostic)</b> — <em>Erythroxylum coca</em> (Coca) • 1 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Cocaine (topical/diagnostic) <span class="tag">Tropane alkaloid</span></div>
+      <div><b>Plant Species:</b> <em>Erythroxylum coca</em> • <a href="https://en.wikipedia.org/wiki/Erythroxylum_coca" target="_blank" rel="noopener">Coca</a></div>
+      <div><b>Plant Part Used:</b> Leaves</div>
+      <div><b>Relationship:</b> Direct plant natural product</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Horner syndrome — diagnostic testing</td><td>≪1,000,001</td><td>Agent‑based diagnostic</td><td>Topical cocaine blocks NE reuptake; anisocoria response aids localization</td><td>Guideline (AAO)</td><td>Cocaine hydrochloride (topical)</td><td><em>Erythroxylum coca</em></td><td><a href="https://en.wikipedia.org/wiki/Erythroxylum_coca" target="_blank" rel="noopener">Coca</a></td><td>Leaves</td><td>Direct plant natural product</td><td class='small'><a href="https://www.aao.org/disease-review/horner-syndrome" target="_blank" rel="noopener">AAO: Horner syndrome testing</a><br><a href="https://en.wikipedia.org/wiki/Coca" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.aao.org/disease-review/horner-syndrome" target="_blank" rel="noopener">AAO Horner review</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Irinotecan</b> — <em>Camptotheca acuminata</em> (Happy tree) • 1 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Irinotecan <span class="tag">Camptothecin derivative</span></div>
+      <div><b>Plant Species:</b> <em>Camptotheca acuminata</em> • <a href="https://en.wikipedia.org/wiki/Camptotheca_acuminata" target="_blank" rel="noopener">Happy tree</a></div>
+      <div><b>Plant Part Used:</b> Bark/wood</div>
+      <div><b>Relationship:</b> Semi‑synthetic from plant precursor (camptothecin)</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Colorectal cancer (metastatic, FOLFIRI) <span class="tag tag-new">New under ≤5M</span></td><td>≈1–2 million survivors (U.S.)</td><td>Chemotherapy component</td><td>Topoisomerase I inhibitor (camptothecin class)</td><td>Guideline (NCCN/PDQ)</td><td>Irinotecan (from camptothecin)</td><td><em>Camptotheca acuminata</em></td><td><a href="https://en.wikipedia.org/wiki/Camptotheca_acuminata" target="_blank" rel="noopener">Happy tree</a></td><td>Bark/wood</td><td>Semi‑synthetic from plant precursor (camptothecin)</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/020571s048lbl.pdf" target="_blank" rel="noopener">FDA label: Irinotecan</a><br><a href="https://en.wikipedia.org/wiki/Camptotheca_acuminata" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Quinine</b> — <em>Cinchona spp.</em> (Cinchona) • 1 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Quinine <span class="tag">Quinoline alkaloid</span></div>
+      <div><b>Plant Species:</b> <em>Cinchona spp.</em> • <a href="https://en.wikipedia.org/wiki/Cinchona" target="_blank" rel="noopener">Cinchona</a></div>
+      <div><b>Plant Part Used:</b> Bark</div>
+      <div><b>Relationship:</b> Direct plant natural product</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Babesiosis (severe/intolerance alternative)</td><td>≪1,000,001</td><td>Antiparasitic (alternative)</td><td>Disrupts parasite heme detoxification</td><td>CDC guideline</td><td>Quinine</td><td><em>Cinchona spp.</em></td><td><a href="https://en.wikipedia.org/wiki/Cinchona" target="_blank" rel="noopener">Cinchona</a></td><td>Bark</td><td>Direct plant natural product</td><td class='small'><a href="https://www.cdc.gov/parasites/babesiosis/treatment.html" target="_blank" rel="noopener">CDC: Babesiosis treatment</a><br><a href="https://en.wikipedia.org/wiki/Cinchona" target="_blank" rel="noopener">Plant origin</a><br><a href="https://www.cdc.gov/parasites/babesiosis/treatment.html" target="_blank" rel="noopener">CDC: Babesiosis treatment</a></td></tr></tbody></table></div>
+    </details>
+    
+    <details class="agent">
+      <summary><b>Vinorelbine</b> — <em>Catharanthus roseus</em> (Madagascar periwinkle) • 1 indication(s)</summary>
+      
+    <div class="grid">
+      <div><b>Drug/Agent:</b> Vinorelbine <span class="tag">Vinca alkaloid (semi‑synthetic)</span></div>
+      <div><b>Plant Species:</b> <em>Catharanthus roseus</em> • <a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></div>
+      <div><b>Plant Part Used:</b> Leaves</div>
+      <div><b>Relationship:</b> Semi‑synthetic from plant alkaloid precursors</div>
+    </div>
+    
+      <div class="details"><table><thead><tr><th>Condition (U.S.)</th><th>U.S. Prevalence</th><th>Role</th><th>Mechanism (one line)</th><th>Evidence</th><th>Plant Compound</th><th>Plant Species</th><th>Common Plant Name</th><th>Plant Part</th><th>Relationship</th><th>Citations</th></tr></thead><tbody><tr><td>Breast cancer (advanced; selected regimens) <span class="tag tag-new">New under ≤5M</span></td><td>≈3–4 million survivors (U.S.)</td><td>Chemotherapy component</td><td>Vinca alkaloid; inhibits microtubule assembly</td><td>Guideline (NCCN/PDQ)</td><td>Vinorelbine</td><td><em>Catharanthus roseus</em></td><td><a href="https://en.wikipedia.org/wiki/Catharanthus_roseus" target="_blank" rel="noopener">Madagascar periwinkle</a></td><td>Leaves</td><td>Semi‑synthetic from plant alkaloid precursors</td><td class='small'><a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/020388s037lbl.pdf" target="_blank" rel="noopener">FDA label: Vinorelbine</a><br><a href="https://en.wikipedia.org/wiki/Vinorelbine" target="_blank" rel="noopener">Plant linkage</a><br><a href="https://www.cancer.gov/" target="_blank" rel="noopener">NCI PDQ overview</a></td></tr></tbody></table></div>
+    </details>
+    
+  
+<script>
+function tableToCSV() {
+  const headers = ["Drug/Agent","Plant (binomial)","Common Plant","Relationship","Compound Class","Condition","US Prevalence","Role","Mechanism","Evidence","Plant Compound","Plant Part","Citations"];
+  const rows = [];
+  const details = document.querySelectorAll('.agent');
+  details.forEach(d => {
+    const agent = d.querySelector('summary b').innerText.trim();
+    const species = d.querySelector('.grid').children[1].innerText.replace('Plant Species:','').trim();
+    const rel = d.querySelector('.grid').children[3].innerText.replace('Relationship:','').trim();
+    const cls = d.querySelector('.grid').children[0].innerText.split('\n')[0].split('Drug/Agent:')[1].trim();
+    const plantCommonLink = d.querySelector('.grid').children[1].querySelector('a');
+    const plantCommon = plantCommonLink ? plantCommonLink.innerText : "";
+    const table = d.querySelector('table');
+    table.querySelectorAll('tbody tr').forEach(tr => {
+      const tds = tr.querySelectorAll('td');
+      const condition = tds[0].innerText;
+      const prev = tds[1].innerText;
+      const role = tds[2].innerText;
+      const mech = tds[3].innerText;
+      const evidence = tds[4].innerText;
+      const plantCompound = tds[5].innerText;
+      const plantPart = tds[8].innerText;
+      const cites = tds[10].innerText.replace(/\n/g, '; ');
+      rows.push([agent, species, plantCommon, rel, cls, condition, prev, role, mech, evidence, plantCompound, plantPart, cites]);
+    });
+  });
+  let csv = headers.join(",") + "\n";
+  rows.forEach(r => {
+    csv += r.map(v => '"' + v.replace(/"/g, '""') + '"').join(",") + "\n";
+  });
+  const blob = new Blob([csv], {type: "text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = "plant_centric_rare_uses_upto_5M.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+// Global filter
+const q = document.getElementById('q');
+q.addEventListener('input', () => {
+  const term = q.value.trim().toLowerCase();
+  document.querySelectorAll('table').forEach(tbl => {
+    tbl.querySelectorAll('tbody tr').forEach(tr => {
+      tr.style.display = tr.innerText.toLowerCase().includes(term) ? '' : 'none';
+    });
+  });
+  document.querySelectorAll('.agent').forEach(sec => {
+    const match = sec.innerText.toLowerCase().includes(term);
+    sec.style.display = match ? '' : '';
+  });
+});
+</script>
+
+  <p class="small">Verification: All entries are ≤5,000,000 in U.S. prevalence (or a clinical emergency indication) and have a current plant link (direct, semi‑synthetic, or plant‑made). Evidence type and citations are provided per row.</p>
+</body>
+</html>
